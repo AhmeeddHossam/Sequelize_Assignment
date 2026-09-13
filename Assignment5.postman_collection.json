@@ -1,0 +1,229 @@
+{
+  "info": {
+    "name": "Assignment 5 - Sequelize",
+    "description": "Users, Posts and Comments APIs built with Express + Sequelize.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Add User (Sign Up)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"1234567\",\n    \"role\": \"user\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/signup",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "signup"]
+            },
+            "description": "Creates a new user using build() and save(). Returns 409 when the email already exists and 400 for the validation errors."
+          }
+        },
+        {
+          "name": "Create Or Update User",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"updated@gmail.com\",\n    \"age\": 30,\n    \"role\": \"user\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1"]
+            },
+            "description": "Upsert based on the primary key with the validation skipped."
+          }
+        },
+        {
+          "name": "Get User By Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/by-email?email=john.doe@example.com",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "by-email"],
+              "query": [{ "key": "email", "value": "john.doe@example.com" }]
+            }
+          }
+        },
+        {
+          "name": "Get User By Id (Without Role)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "1"]
+            },
+            "description": "Finds the user by his PK and excludes the role field from the response."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Add Post",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"First Post\",\n    \"content\": \"This is the content of the first post.\",\n    \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts"]
+            }
+          }
+        },
+        {
+          "name": "Delete Post (Owner Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "1"]
+            },
+            "description": "Soft delete (paranoid). Only the owner of the post can delete it, the id of the user is sent in the body."
+          }
+        },
+        {
+          "name": "Get All Posts With User And Comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/posts/details",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "details"]
+            }
+          }
+        },
+        {
+          "name": "Get All Posts With Comments Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/posts/comment-count",
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "comment-count"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Add Bulk Of Comments",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"comments\": [\n        {\n            \"content\": \"This is the first comment.\",\n            \"postId\": 1,\n            \"userId\": 1\n        },\n        {\n            \"content\": \"Amazing post!\",\n            \"postId\": 1,\n            \"userId\": 2\n        },\n        {\n            \"content\": \"I totally agree with this post.\",\n            \"postId\": 2,\n            \"userId\": 3\n        },\n        {\n            \"content\": \"Thanks for sharing your thoughts.\",\n            \"postId\": 3,\n            \"userId\": 1\n        },\n        {\n            \"content\": \"Looking forward to more posts like this!\",\n            \"postId\": 1,\n            \"userId\": 3\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments"]
+            }
+          }
+        },
+        {
+          "name": "Update Comment (Owner Only)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userId\": 3,\n    \"content\": \"updated\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "1"]
+            }
+          }
+        },
+        {
+          "name": "Find Or Create Comment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"postId\": 1,\n    \"userId\": 2,\n    \"content\": \"This is a sample comment\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comments/find-or-create",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "find-or-create"]
+            }
+          }
+        },
+        {
+          "name": "Search Comments By Word",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comments/search?word=the",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "search"],
+              "query": [{ "key": "word", "value": "the" }]
+            }
+          }
+        },
+        {
+          "name": "Get Newest 3 Comments For Post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comments/newest/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "newest", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Comment Details By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comments/details/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "details", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

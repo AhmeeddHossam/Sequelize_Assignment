@@ -1,0 +1,22 @@
+{
+  "name": "assignment-5-sequelize",
+  "version": "1.0.0",
+  "description": "Assignment 5 - Sequelize (Users, Posts, Comments) REST APIs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": ["sequelize", "express", "mysql"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.5",
+    "sequelize": "^6.37.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
